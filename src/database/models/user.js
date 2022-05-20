@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     image: DataTypes.STRING,
   },
   {
-    timestamps: false, // remove a obrigatoriedade de utilizar os campos `createdAt` e `updatedAt`
+    timestamps: false, 
     tableName: 'Users',
   });
 
