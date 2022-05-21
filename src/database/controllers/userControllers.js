@@ -18,40 +18,32 @@ try {
   const token = jwt.sign(userRmPassword, JWT_SECRET, { expiresIn: '1h' });
   return res.status(200).json({ token });
 } catch (error) {
-  return res.status(500).json({ token: 'lisho' });
+  return res.status(500).json({ token: 'we working on it, WE WORKING ON IT' });
 } 
 };
 
-// const validateUserFormat = (req, res, next) => {
-//   const { display, email, password, image } = req.body;
-//   if (display.length < 8) {
-//  return res.status(400).message({
-//     message: '"displayName" length must be at least 8 characters long',
-//   }); 
-// }
+const createUser = async (req, res) => {
+  try {
+    const { displayName, email, password, image } = req.body;
+    const newUser = await User.create({
+      displayName,
+      email,
+      password,
+      image,
 
+    });
 
-// };
+    console.log(newUser);
+    const { password: passwordHolder, ...userRmPassword } = newUser.dataValues;
+    const token = jwt.sign(userRmPassword, JWT_SECRET, { expiresIn: '1h' });
 
-// const createUser = async (req, res) => {
-//   try {
-//     const { display, email, password, image } = req.body;
-
-//     const userInfo = await User.findOne({ where: { email } });
-    
-//     if (!userInfo || userInfo.password !== password) {
-//     return res.status(400).json({ message: 'Invalid fields' }); 
-//     }
-//     const userValues = userInfo.dataValues; 
-    
-//     const { password: passwordHolder, ...userRmPassword } = userValues;
-//     const token = jwt.sign(userRmPassword, JWT_SECRET, { expiresIn: '1h' });
-//     return res.status(200).json({ token });
-//   } catch (error) {
-//     return res.status(500).json({ token: 'lisho' });
-//   } 
-//   };
+    return res.status(201).json({ token });
+  } catch (error) {
+    return res.status(500).json({ token: 'hmm q papelão hein' });
+  } 
+  };
 
 module.exports = {
   loginUser,
+  createUser,
 };
