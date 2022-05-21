@@ -17,15 +17,11 @@ const createCategory = async (req, res) => {
   } 
   };
 
-//  const getAllUsers = async (req, res) => {
-//    const allUser = await User.findAll({
-//     attributes: {
-//         exclude: ['password'],
-//     },
-// });
+ const getAllCategories = async (req, res) => {
+   const allCategories = await Category.findAll();
 
-//    return res.status(200).send(allUser);
-//  };
+   return res.status(200).send(allCategories);
+ };
 
 //  const getById = async (req, res) => {
 //   const { id } = req.params;
@@ -40,6 +36,5 @@ const createCategory = async (req, res) => {
 
 module.exports = {
   createCategory,
- // getAllUsers,
- // getById,
+  getAllCategories,
 };

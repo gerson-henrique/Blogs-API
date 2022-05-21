@@ -6,5 +6,6 @@ const userValidations = require('../validations/userValidations');
 const router = express.Router();
 
  router.post('/', userValidations.auth, categoriesController.createCategory);
+ router.get('/', userValidations.auth, categoriesController.getAllCategories);
  
 module.exports = router;
