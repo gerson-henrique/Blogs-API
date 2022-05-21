@@ -6,12 +6,11 @@ const { BlogPost, PostCategory } = require('../models');
 const createPost = async (req, res) => {
   try {
     const { title, content, categoryIds } = req.body;
-    const { user } = req;
-    // const newPost = await BlogPost.create({ title, content, categoryIds });
-
-    // console.log(newCategory);
+    const { id } = req.user;
+     const newPost = await BlogPost.create({ title, content, userId: id });
+    console.log(newPost);
     // const CategoryValues = newCategory.dataValues;
-    return res.status(201).send(user);
+    return res.status(201).send(newPost);
   } catch (error) {
     return res.status(500).json({ token: 'hmm q papelão hein' });
   } 
