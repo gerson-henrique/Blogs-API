@@ -63,10 +63,8 @@ const auth = (req, res, next) => {
     req.user = payload;
     next();
   } catch (error) {
-  res.status(401).json({ message: 'Expired or invalid token' });
+  return res.status(401).json({ message: 'Expired or invalid token' });
   }
-  
-  next();
 };
 module.exports = {
   validateLoginBody,
