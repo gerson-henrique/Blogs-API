@@ -1,4 +1,7 @@
+const jwt = require('jsonwebtoken');
 const { User } = require('../../models');
+
+const { JWT_SECRET } = process.env;
 
 const validateLoginBody = async (req, res, next) => {
   const { email, password } = req.body;
@@ -52,9 +55,23 @@ if (result) return res.status(409).json({ message: 'User already registered' });
 next(); 
 };
 
+const auth = (req, res, next) => {
+  const { authorization } = req.headers;
+  if (!authorization) return res.status(401).json({ message: 'Token not found' });
+  try {
+    const payload = jwt.verify(authorization, JWT_SECRET);
+    req.user = payload;
+    next();
+  } catch (error) {
+  res.status(401).json({ message: 'Expired or invalid token' });
+  }
+  
+  next();
+};
 module.exports = {
   validateLoginBody,
   validateUserBody,
   validateUserFormat,
   searchByEmail,
+  auth,
 };

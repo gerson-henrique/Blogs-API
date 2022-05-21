@@ -43,7 +43,13 @@ const createUser = async (req, res) => {
   } 
   };
 
+ const getAllUsers = async (req, res) => {
+   const allUser = await User.findAll();
+   return res.status(200).json({ allUser });
+ };
+
 module.exports = {
   loginUser,
   createUser,
+  getAllUsers,
 };
