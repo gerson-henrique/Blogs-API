@@ -1,5 +1,6 @@
 const express = require('express');
- const loginRouter = require('./database/middlewares/loginRouter');
+ const loginRouter = require('./database/middlewares/routers/loginRouter');
+ const userRouter = require('./database/middlewares/routers/userRouter');
 
 // ...
 
@@ -7,6 +8,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/login', loginRouter);
+app.use('/user', userRouter);
 
 // ...
 
