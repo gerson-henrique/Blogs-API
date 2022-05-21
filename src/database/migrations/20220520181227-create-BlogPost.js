@@ -26,7 +26,6 @@ module.exports = {
         type: Sequelize.DATE,
       },
       userId: {
-        unique: true,
         type: Sequelize.INTEGER,
         allowNull: false,
         onUpdate: 'CASCADE',
