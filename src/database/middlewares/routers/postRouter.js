@@ -1,10 +1,15 @@
 const express = require('express');
-const categoriesController = require('../../controllers/categoriesController');
+const postControllers = require('../../controllers/postControllers');
 const userValidations = require('../validations/userValidations');
+const postValidations = require('../validations/postValidations');
 
 const router = express.Router();
 
- router.post('/', userValidations.auth, categoriesController.createCategory);
- router.get('/', userValidations.auth, categoriesController.getAllCategories);
+ router.post('/', 
+ userValidations.auth,
+ postValidations.validatePostBody,
+ postValidations.idCategoryCheck,
+ postControllers.createPost);
+// router.get('/', userValidations.auth, postControllers.getAllPosts);
  
 module.exports = router;

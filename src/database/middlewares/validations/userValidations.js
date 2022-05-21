@@ -13,7 +13,6 @@ const validateLoginBody = async (req, res, next) => {
    }
    next();
 };
-
 const validateUserBody = async (req, res, next) => {
   const { displayName, email, password, image } = req.body;
 
