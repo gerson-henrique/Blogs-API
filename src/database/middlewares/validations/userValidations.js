@@ -66,10 +66,19 @@ const auth = (req, res, next) => {
   return res.status(401).json({ message: 'Expired or invalid token' });
   }
 };
+
+const idUserCheck = async (req, res, next) => {
+const { id } = req.params;
+const result = await User.findOne({ where: { id } });
+if (!result) return res.status(404).json({ message: 'User does not exist' });
+next();
+};
+
 module.exports = {
   validateLoginBody,
   validateUserBody,
   validateUserFormat,
   searchByEmail,
   auth,
+  idUserCheck,
 };

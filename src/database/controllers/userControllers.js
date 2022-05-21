@@ -53,8 +53,20 @@ const createUser = async (req, res) => {
    return res.status(200).send(allUser);
  };
 
+ const getById = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findOne({
+    where: { id },
+   attributes: {
+       exclude: ['password'],
+   },
+});
+return res.status(200).send(user);
+ };
+
 module.exports = {
   loginUser,
   createUser,
   getAllUsers,
+  getById,
 };
