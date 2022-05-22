@@ -5,10 +5,10 @@ const { BlogPost, PostCategory } = require('../models');
 
 const createPost = async (req, res) => {
   try {
-    const { title, content, categoryIds } = req.body;
-    const { id } = req.user;
-     const newPost = await BlogPost.create({ title, content, userId: id });
-    console.log(newPost);
+  const { title, content, categoryIds } = req.body;
+  const idAuthor = req.user.id;
+  console.log(idAuthor);
+   const newPost = await BlogPost.create({ title, content, userId: idAuthor, published: Date.now(), updated: Date.now() });
     // const CategoryValues = newCategory.dataValues;
     return res.status(201).send(newPost);
   } catch (error) {
