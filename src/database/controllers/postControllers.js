@@ -8,9 +8,16 @@ const createPost = async (req, res) => {
   const { title, content, categoryIds } = req.body;
   const idAuthor = req.user.id;
   console.log(idAuthor);
-   const newPost = await BlogPost.create({ title, content, userId: idAuthor, published: Date.now(), updated: Date.now() });
-    // const CategoryValues = newCategory.dataValues;
-    return res.status(201).send(newPost);
+   const newPost = await BlogPost.create({ title,
+     content,
+userId: idAuthor,
+published: Date.now(),
+updated: Date.now() });
+const npid = newPost.dataValues.id;
+categoryIds.forEach(async (e) => {
+  PostCategory.create({ postId: npid, categoryId: e });
+});
+    return res.status(201).json(newPost);
   } catch (error) {
     return res.status(500).json({ token: 'hmm q papelão hein' });
   } 
