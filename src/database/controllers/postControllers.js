@@ -1,5 +1,5 @@
 // const jwt = require('jsonwebtoken');
-const { BlogPost, PostCategory } = require('../models');
+const { BlogPost, PostCategory, User } = require('../models');
 
 // const { JWT_SECRET } = process.env;
 
@@ -23,17 +23,35 @@ categoryIds.forEach(async (e) => {
   } 
   };
 
-//  const getById = async (req, res) => {
-//   const { id } = req.params;
-//   const user = await User.findOne({
-//     where: { id },
-//    attributes: {
-//        exclude: ['password'],
-//    },
-// });
-// return res.status(200).send(user);
-//  };
+  const getAllPosts = async (req, res) => {
+    const allPosts = await BlogPost.findAll({ 
+      include: { 
+        model: User,
+            as: 'user',
+        attributes: { exclude: ['password'] },
+      },
+    });
+    res.status(200).send(allPosts);
+  };
+
+  const getById = async (req, res) => {
+    const { id } = req.params;
+    const post = await BlogPost.findByPk(id);
+    if (!post) {
+      return res.status(404).json({
+           message: 'Post does not exist',
+         }); 
+     }
+    const user = await post.getUser();
+    const categories = await post.getCategories();
+
+    delete user.dataValues.password;
+    categories.forEach((e) => delete e.dataValues.PostCategory);
+    res.status(200).send({ ...post.dataValues, user, categories });
+  };
 
 module.exports = {
   createPost,
+  getAllPosts,
+  getById,
 };
