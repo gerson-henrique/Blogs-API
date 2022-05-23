@@ -1,4 +1,4 @@
- const { Category } = require('../../models');
+ const { Category, BlogPost } = require('../../models');
 
 const validatePostBody = async (req, res, next) => {
   const { title, content, categoryIds } = req.body;
@@ -18,7 +18,20 @@ const idCategoryCheck = async (req, res, next) => {
    next();
   };
 
+  const userHavePost = async (req, res, next) => {
+    const { id } = req.params;
+    const userID = req.user.id;
+    const post = await BlogPost.findByPk(id);
+    if (post.dataValues.userId !== userID) {
+ return res.status(401).json({
+      message: 'Unauthorized user',
+    }); 
+}
+     next();
+    };
+
 module.exports = {
   validatePostBody,
   idCategoryCheck,
+  userHavePost,
 };

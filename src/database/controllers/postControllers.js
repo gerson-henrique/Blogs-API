@@ -1,5 +1,5 @@
 // const jwt = require('jsonwebtoken');
-const { BlogPost, PostCategory, User, Category } = require('../models');
+const { BlogPost, PostCategory, User, Category, sequelize } = require('../models');
 
 // const { JWT_SECRET } = process.env;
 
@@ -51,8 +51,30 @@ categoryIds.forEach(async (e) => {
     res.status(200).send({ ...post.dataValues, user, categories });
   };
 
+  const updatePost = async (req, res) => {
+    const { title, content } = req.body;
+    const { id } = req.params;
+    if (!title || !content) {
+    return res.status(400).json({
+      message: 'Some required fields are missing',
+    }); 
+  }
+  await BlogPost.update({ title, content, updated: sequelize.fn('NOW') },
+  { where: { id } });
+  const post = await BlogPost.findByPk(id);
+  if (!post) {
+    return res.status(404).json({ message: 'Post does not exist' }); 
+   }
+  const user = await post.getUser();
+         const categories = await post.getCategories();
+         delete user.dataValues.password;
+         categories.forEach((e) => delete e.dataValues.PostCategory);
+         res.status(200).send({ ...post.dataValues, user, categories });
+  };
+
 module.exports = {
   createPost,
   getAllPosts,
   getById,
+  updatePost,
 };

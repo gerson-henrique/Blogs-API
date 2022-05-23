@@ -5,8 +5,12 @@ const postValidations = require('../validations/postValidations');
 
 const router = express.Router();
 
- router.get('/', userValidations.auth, postControllers.getAllPosts);
- router.get('/:id', userValidations.auth, postControllers.getById);
+ router.get('/', userValidations.auth, 
+  postControllers.getAllPosts);
+ router.get('/:id', userValidations.auth, 
+  postControllers.getById);
+ router.put('/:id', userValidations.auth, postValidations.userHavePost,
+  postControllers.updatePost);
  router.post('/', 
  userValidations.auth,
  postValidations.validatePostBody,
