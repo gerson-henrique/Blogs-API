@@ -11,6 +11,8 @@ const router = express.Router();
   postControllers.getById);
  router.put('/:id', userValidations.auth, postValidations.userHavePost,
   postControllers.updatePost);
+router.delete('/:id', userValidations.auth, postValidations.userHavePost,
+postControllers.deleteById);
  router.post('/', 
  userValidations.auth,
  postValidations.validatePostBody,

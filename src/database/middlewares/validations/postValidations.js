@@ -21,14 +21,22 @@ const idCategoryCheck = async (req, res, next) => {
   const userHavePost = async (req, res, next) => {
     const { id } = req.params;
     const userID = req.user.id;
+
     const post = await BlogPost.findByPk(id);
+    if (!post) {
+   return res.status(404).json({
+      message: 'Post does not exist',
+    }); 
+  } 
+  
     if (post.dataValues.userId !== userID) {
  return res.status(401).json({
       message: 'Unauthorized user',
     }); 
 }
-     next();
-    };
+
+next();
+  };
 
 module.exports = {
   validatePostBody,

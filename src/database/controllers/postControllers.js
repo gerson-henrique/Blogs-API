@@ -72,9 +72,17 @@ categoryIds.forEach(async (e) => {
          res.status(200).send({ ...post.dataValues, user, categories });
   };
 
+  const deleteById = async (req, res) => {
+  const { id } = req.params;
+  await BlogPost.destroy({ where: { id } });
+   await PostCategory.destroy({ where: { postId: id } });
+   res.status(204).end();
+  };
+
 module.exports = {
   createPost,
   getAllPosts,
   getById,
   updatePost,
+  deleteById,
 };
