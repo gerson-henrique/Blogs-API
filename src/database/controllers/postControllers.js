@@ -93,14 +93,14 @@ where: { title: { [Op.like]: `%${q}%` } } });
     const content = await BlogPost.findAll({ include: [{ 
       model: User, as: 'user', attributes: { exclude: ['password'] },
     }, { model: Category, as: 'categories', through: { attributes: [] } }],
-where: { content: { [sequelize.like]: q } } });
+where: { content: { [Op.like]: `%${q}%` } } });
     if (content.length > 0) return res.status(200).send(content); 
     const all = await BlogPost.findAll({ include: [{ 
       model: User, as: 'user', attributes: { exclude: ['password'] },
     }, {
-      model: Category, as: 'categories', through: { attributes: [] },
-     }] });
-    res.status(500).send(all);
+      model: Category, as: 'categories', through: { attributes: [] } }],
+where: { content: { [Op.like]: `%${q}%` } } });
+    res.status(200).send(all);
   };
 
 module.exports = {
