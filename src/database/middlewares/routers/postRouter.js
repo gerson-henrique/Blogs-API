@@ -6,7 +6,8 @@ const postValidations = require('../validations/postValidations');
 const router = express.Router();
 
  router.get('/', userValidations.auth, 
-  postControllers.getAllPosts);
+ postControllers.getAllPosts);
+ router.get('/search', userValidations.auth, postControllers.findByQ);
  router.get('/:id', userValidations.auth, 
   postControllers.getById);
  router.put('/:id', userValidations.auth, postValidations.userHavePost,

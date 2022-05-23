@@ -1,5 +1,8 @@
 // const jwt = require('jsonwebtoken');
+const Sequelize = require('sequelize');
 const { BlogPost, PostCategory, User, Category, sequelize } = require('../models');
+
+const { Op } = Sequelize;
 
 // const { JWT_SECRET } = process.env;
 
@@ -79,10 +82,32 @@ categoryIds.forEach(async (e) => {
    res.status(204).end();
   };
 
+  const findByQ = async (req, res) => {
+    const { q } = req.query;
+    const title = await BlogPost.findAll({ include: [{ 
+      model: User, as: 'user', attributes: { exclude: ['password'] },
+    }, { model: Category, as: 'categories', through: { attributes: [] } }],
+where: { title: { [Op.like]: `%${q}%` } } });
+    console.log(title);
+    if (title.length > 0) return res.status(200).send(title); 
+    const content = await BlogPost.findAll({ include: [{ 
+      model: User, as: 'user', attributes: { exclude: ['password'] },
+    }, { model: Category, as: 'categories', through: { attributes: [] } }],
+where: { content: { [sequelize.like]: q } } });
+    if (content.length > 0) return res.status(200).send(content); 
+    const all = await BlogPost.findAll({ include: [{ 
+      model: User, as: 'user', attributes: { exclude: ['password'] },
+    }, {
+      model: Category, as: 'categories', through: { attributes: [] },
+     }] });
+    res.status(500).send(all);
+  };
+
 module.exports = {
   createPost,
   getAllPosts,
   getById,
   updatePost,
   deleteById,
+  findByQ,
 };
