@@ -64,9 +64,16 @@ const createUser = async (req, res) => {
 return res.status(200).send(user);
  };
 
+ const deleteUser = async (req, res) => {
+   const { id } = req.user;
+  await User.destroy({ where: { id } });
+  res.status(204).end();
+};
+
 module.exports = {
   loginUser,
   createUser,
   getAllUsers,
   getById,
+  deleteUser,
 };

@@ -12,5 +12,5 @@ userControllers.getById);
  userValidations.validateUserFormat,
  userValidations.searchByEmail,
  userControllers.createUser);
- 
+ router.delete('/me', userValidations.auth, userControllers.deleteUser);
 module.exports = router;
